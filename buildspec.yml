@@ -3,15 +3,18 @@ version: 0.2
 phases:
   install:
     runtime-versions:
-      python: 3.8
+      docker: 18
     commands:
-      - echo "Installing requirements..."
-      - pip install --upgrade pip
-      - pip install -r requirements.txt || echo "Failed to install dependencies"
+      - echo Installing dependencies...
+      - pip install -r requirements.txt
   build:
     commands:
-      - echo "Build phase completed."
-
+      - echo Building Docker image...
+      - docker build -t $REPOSITORY_URI:$CODEBUILD_RESOLVED_SOURCE_VERSION .
+      - echo Creating imagedefinitions.json...
+      - printf '[{"name":"container-name","imageUri":"%s"}]' $REPOSITORY_URI:$CODEBUILD_RESOLVED_SOURCE_VERSION > imagedefinitions.json
 artifacts:
   files:
-    - "**/*"
+    - imagedefinitions.json
+    - '**/*'
+  discard-paths: yes
