@@ -5,11 +5,13 @@ phases:
     runtime-versions:
       python: 3.8
     commands:
+      - echo Upgrading pip...
+      - pip install --upgrade pip
       - echo Installing dependencies...
-      - pip install -r requirements.txt
+      - pip install --no-cache-dir -r requirements.txt
   build:
     commands:
-      - echo Building the Docker image...
+      - echo Building Docker image...
       - docker build -t my-image .
       - echo '[{"name":"my-container","imageUri":"'$AWS_ACCOUNT_ID'.dkr.ecr.'$AWS_REGION'.amazonaws.com/my-repo:'$CODEBUILD_RESOLVED_SOURCE_VERSION'"}]' > imagedefinitions.json
 artifacts:
