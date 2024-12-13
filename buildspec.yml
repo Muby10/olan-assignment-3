@@ -3,17 +3,17 @@ version: 0.2
 phases:
   install:
     runtime-versions:
-      python: 3.8
+      python: 3.12  # Use Python 3.12
     commands:
-      - echo Upgrading pip...
-      - pip install --upgrade pip
       - echo Installing dependencies...
+      - python --version  # Verify Python version
       - pip install --no-cache-dir -r requirements.txt
+
   build:
     commands:
-      - echo Building Docker image...
-      - docker build -t my-image .
-      - echo '[{"name":"my-container","imageUri":"'$AWS_ACCOUNT_ID'.dkr.ecr.'$AWS_REGION'.amazonaws.com/my-repo:'$CODEBUILD_RESOLVED_SOURCE_VERSION'"}]' > imagedefinitions.json
+      - echo Build phase...
+      - python app.py  # Replace with your actual build/test command
+
 artifacts:
   files:
     - imagedefinitions.json
