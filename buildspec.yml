@@ -3,13 +3,8 @@ version: 0.2
 phases:
   install:
     runtime-versions:
-      python: 3.8  # Using Python as the runtime version
+      python: 3.8
     commands:
-      - echo Installing Docker...
-      - curl -fsSL https://get.docker.com -o get-docker.sh
-      - sudo sh get-docker.sh
-      - sudo usermod -aG docker $USER
-      - docker --version  # Verify Docker installation
       - echo Installing dependencies...
       - pip install -r requirements.txt
   build:
@@ -20,4 +15,3 @@ phases:
 artifacts:
   files:
     - imagedefinitions.json
-
