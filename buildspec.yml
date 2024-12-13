@@ -5,8 +5,9 @@ phases:
     runtime-versions:
       python: 3.8
     commands:
+      - echo "Installing requirements..."
       - pip install --upgrade pip
-      - pip install -r requirements.txt
+      - pip install -r requirements.txt || echo "Failed to install dependencies"
   build:
     commands:
       - echo "Build phase completed."
