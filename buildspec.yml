@@ -3,18 +3,21 @@ version: 0.2
 phases:
   install:
     runtime-versions:
-      docker: 18
+      python: 3.8  # Using Python as the runtime version
     commands:
+      - echo Installing Docker...
+      - curl -fsSL https://get.docker.com -o get-docker.sh
+      - sudo sh get-docker.sh
+      - sudo usermod -aG docker $USER
+      - docker --version  # Verify Docker installation
       - echo Installing dependencies...
       - pip install -r requirements.txt
   build:
     commands:
-      - echo Building Docker image...
-      - docker build -t $REPOSITORY_URI:$CODEBUILD_RESOLVED_SOURCE_VERSION .
-      - echo Creating imagedefinitions.json...
-      - printf '[{"name":"container-name","imageUri":"%s"}]' $REPOSITORY_URI:$CODEBUILD_RESOLVED_SOURCE_VERSION > imagedefinitions.json
+      - echo Building the Docker image...
+      - docker build -t my-image .
+      - echo '[{"name":"my-container","imageUri":"'$AWS_ACCOUNT_ID'.dkr.ecr.'$AWS_REGION'.amazonaws.com/my-repo:'$CODEBUILD_RESOLVED_SOURCE_VERSION'"}]' > imagedefinitions.json
 artifacts:
   files:
     - imagedefinitions.json
-    - '**/*'
-  discard-paths: yes
+
